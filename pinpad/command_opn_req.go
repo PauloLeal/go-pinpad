@@ -18,24 +18,19 @@ func (opn *OpnRequest) Validate() error {
 }
 
 func (opn *OpnRequest) Parse(rawData string) error {
-	cursor := 0
-	readN := func(n int) string {
-		r := rawData[cursor : cursor+n]
-		cursor += n
-		return r
-	}
+	pr := NewPositionalReader(rawData)
 
-	cmd := readN(3)
+	cmd := pr.Read(3)
 	if cmd != "OPN" {
 		return errors.New("cannot parse opn command")
 	}
 
-	size, err := strconv.Atoi(readN(3))
+	size, err := strconv.Atoi(pr.Read(3))
 	if err != nil {
 		return err
 	}
 
-	opn.PsCom, err = strconv.Atoi(readN(size))
+	opn.PsCom, err = strconv.Atoi(pr.Read(size))
 	if err != nil {
 		return err
 	}

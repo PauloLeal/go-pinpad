@@ -13,10 +13,11 @@ func TestOpnRequest(t *testing.T) {
 	}
 }
 
-func TestOpnRequest_String(t *testing.T) {
-	t.Run("00", auxTestOpnRequest_String(OpnRequest{PsCom: 0}, "OPN00200"))
-	t.Run("99", auxTestOpnRequest_String(OpnRequest{PsCom: 99}, "OPN00299"))
-	t.Run("100", auxTestOpnRequest_String(OpnRequest{PsCom: 100}, ""))
+func TestOpnRequest_Validate(t *testing.T) {
+	t.Run("00", auxTestOpnRequest_Validate(OpnRequest{PsCom: 0}, false))
+	t.Run("-1", auxTestOpnRequest_Validate(OpnRequest{PsCom: -1}, true))
+	t.Run("100", auxTestOpnRequest_Validate(OpnRequest{PsCom: 100}, true))
+	t.Run("1000", auxTestOpnRequest_Validate(OpnRequest{PsCom: 1000}, true))
 }
 
 func TestOpnRequest_Parse(t *testing.T) {
@@ -28,11 +29,19 @@ func TestOpnRequest_Parse(t *testing.T) {
 	t.Run("Bad psCom", auxTestOpnRequest_Parse("OPN002AA", OpnRequest{PsCom: 0}, true))
 }
 
-func auxTestOpnRequest_String(opn OpnRequest, expectedResult string) func(*testing.T) {
+func TestOpnRequest_String(t *testing.T) {
+	t.Run("00", auxTestOpnRequest_String(OpnRequest{PsCom: 0}, "OPN00200"))
+	t.Run("99", auxTestOpnRequest_String(OpnRequest{PsCom: 99}, "OPN00299"))
+	t.Run("100", auxTestOpnRequest_String(OpnRequest{PsCom: 100}, ""))
+}
+
+func auxTestOpnRequest_Validate(opn OpnRequest, expectError bool) func(*testing.T) {
 	return func(t *testing.T) {
-		s := opn.String()
-		if s != expectedResult {
-			t.Error(fmt.Sprintf("Expected String() of %+v to be %s. Got %s", opn, expectedResult, s))
+		err := opn.Validate()
+		if err == nil && expectError == true {
+			t.Errorf("Expected to return error")
+		} else if err != nil && expectError == false {
+			t.Errorf("Expected to not return error")
 		}
 	}
 }
@@ -50,6 +59,15 @@ func auxTestOpnRequest_Parse(rawData string, expectedResult OpnRequest, expectEr
 
 		if o != expectedResult {
 			t.Error(fmt.Sprintf("Expected Parse() of %s to be %+v. Got %+v", rawData, expectedResult, o))
+		}
+	}
+}
+
+func auxTestOpnRequest_String(opn OpnRequest, expectedResult string) func(*testing.T) {
+	return func(t *testing.T) {
+		s := opn.String()
+		if s != expectedResult {
+			t.Error(fmt.Sprintf("Expected String() of %+v to be %s. Got %s", opn, expectedResult, s))
 		}
 	}
 }
