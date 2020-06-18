@@ -1,5 +1,16 @@
 package pinpad
 
+type Command interface {
+	Validate() error
+	Parse(rawData string) error
+	String() string
+}
+
+type CommandResponse interface {
+	Command
+	GetStatus() int
+}
+
 const (
 	PP_OK         = 0
 	PP_PROCESSING = 1

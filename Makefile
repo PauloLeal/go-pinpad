@@ -1,4 +1,4 @@
-COVER_PROFILE_FILE=$(shell mktemp)
+COVER_PROFILE_FILE=/tmp/goemv-go-cover.tmp
 
 target: test
 
