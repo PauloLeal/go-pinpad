@@ -23,7 +23,7 @@ func (cmd *OpnResponse) Parse(rawData string) error {
 
 	cmdName := pr.Read(3)
 	if cmdName != cmd.GetName() {
-		return errors.New("cannot parse cmd command")
+		return errors.New(fmt.Sprintf("cannot parse %s command", cmd.GetName()))
 	}
 
 	status, err := strconv.Atoi(pr.Read(3))
@@ -33,7 +33,7 @@ func (cmd *OpnResponse) Parse(rawData string) error {
 
 	zeroes := pr.Read(3)
 	if zeroes != "000" {
-		return errors.New("cannot parse cmd command")
+		return errors.New(fmt.Sprintf("cannot parse %s command", cmd.GetName()))
 	}
 
 	cmd.status = status

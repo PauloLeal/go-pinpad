@@ -31,7 +31,7 @@ func (cmd *OpnRequest) Parse(rawData string) error {
 
 	cmdName := pr.Read(3)
 	if cmdName != cmd.GetName() {
-		return errors.New("cannot parse cmd command")
+		return errors.New(fmt.Sprintf("cannot parse %s command", cmd.GetName()))
 	}
 
 	size, err := strconv.Atoi(pr.Read(3))
