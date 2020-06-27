@@ -1,4 +1,4 @@
-package pinpad
+package pplib
 
 import (
 	"errors"
@@ -7,7 +7,11 @@ import (
 )
 
 type OpnRequest struct {
-	PsCom int `json:"psCom"`
+	PsCom int    `json:"psCom"`
+}
+
+func (opn *OpnRequest) GetName() string {
+	return "OPN"
 }
 
 func (opn *OpnRequest) Validate() error {
@@ -44,5 +48,5 @@ func (opn *OpnRequest) String() string {
 		return ""
 	}
 
-	return fmt.Sprintf("OPN002%02d", opn.PsCom)
+	return fmt.Sprintf("%s002%02d", opn.GetName(), opn.PsCom)
 }

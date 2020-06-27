@@ -1,6 +1,7 @@
-package pinpad
+package pplib
 
 type Command interface {
+	GetName() string
 	Validate() error
 	Parse(rawData string) error
 	String() string

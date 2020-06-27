@@ -1,4 +1,4 @@
-package pinpad
+package pplib
 
 import (
 	"errors"
@@ -7,7 +7,11 @@ import (
 )
 
 type OpnResponse struct {
-	Status int `json:"status"`
+	status int
+}
+
+func (opn *OpnResponse) GetName() string {
+	return "OPN"
 }
 
 func (opn *OpnResponse) Validate() error {
@@ -32,15 +36,15 @@ func (opn *OpnResponse) Parse(rawData string) error {
 		return errors.New("cannot parse opn command")
 	}
 
-	opn.Status = status
+	opn.status = status
 
 	return opn.Validate()
 }
 
 func (opn *OpnResponse) String() string {
-	return fmt.Sprintf("OPN%03d000", opn.Status)
+	return fmt.Sprintf("%s%03d000", opn.GetName(), opn.status)
 }
 
 func (opn *OpnResponse) GetStatus() int {
-	return opn.Status
+	return opn.status
 }

@@ -1,4 +1,4 @@
-package pinpad
+package pplib
 
 import (
 	"testing"
