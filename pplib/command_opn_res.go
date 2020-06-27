@@ -10,20 +10,20 @@ type OpnResponse struct {
 	status int
 }
 
-func (opn *OpnResponse) GetName() string {
+func (cmd *OpnResponse) GetName() string {
 	return "OPN"
 }
 
-func (opn *OpnResponse) Validate() error {
+func (cmd *OpnResponse) Validate() error {
 	return nil
 }
 
-func (opn *OpnResponse) Parse(rawData string) error {
+func (cmd *OpnResponse) Parse(rawData string) error {
 	pr := NewPositionalReader(rawData)
 
-	cmd := pr.Read(3)
-	if cmd != "OPN" {
-		return errors.New("cannot parse opn command")
+	cmdName := pr.Read(3)
+	if cmdName != "OPN" {
+		return errors.New("cannot parse cmd command")
 	}
 
 	status, err := strconv.Atoi(pr.Read(3))
@@ -33,18 +33,18 @@ func (opn *OpnResponse) Parse(rawData string) error {
 
 	zeroes := pr.Read(3)
 	if zeroes != "000" {
-		return errors.New("cannot parse opn command")
+		return errors.New("cannot parse cmd command")
 	}
 
-	opn.status = status
+	cmd.status = status
 
-	return opn.Validate()
+	return cmd.Validate()
 }
 
-func (opn *OpnResponse) String() string {
-	return fmt.Sprintf("%s%03d000", opn.GetName(), opn.status)
+func (cmd *OpnResponse) String() string {
+	return fmt.Sprintf("%s%03d000", cmd.GetName(), cmd.status)
 }
 
-func (opn *OpnResponse) GetStatus() int {
-	return opn.status
+func (cmd *OpnResponse) GetStatus() int {
+	return cmd.status
 }

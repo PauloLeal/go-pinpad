@@ -10,23 +10,23 @@ type OpnRequest struct {
 	PsCom int    `json:"psCom"`
 }
 
-func (opn *OpnRequest) GetName() string {
+func (cmd *OpnRequest) GetName() string {
 	return "OPN"
 }
 
-func (opn *OpnRequest) Validate() error {
-	if opn.PsCom < 0 || opn.PsCom > 99 {
+func (cmd *OpnRequest) Validate() error {
+	if cmd.PsCom < 0 || cmd.PsCom > 99 {
 		return errors.New("invalid PsCom value")
 	}
 	return nil
 }
 
-func (opn *OpnRequest) Parse(rawData string) error {
+func (cmd *OpnRequest) Parse(rawData string) error {
 	pr := NewPositionalReader(rawData)
 
-	cmd := pr.Read(3)
-	if cmd != "OPN" {
-		return errors.New("cannot parse opn command")
+	cmdName := pr.Read(3)
+	if cmdName != "OPN" {
+		return errors.New("cannot parse cmd command")
 	}
 
 	size, err := strconv.Atoi(pr.Read(3))
@@ -34,19 +34,19 @@ func (opn *OpnRequest) Parse(rawData string) error {
 		return err
 	}
 
-	opn.PsCom, err = strconv.Atoi(pr.Read(size))
+	cmd.PsCom, err = strconv.Atoi(pr.Read(size))
 	if err != nil {
 		return err
 	}
 
-	return opn.Validate()
+	return cmd.Validate()
 }
 
-func (opn *OpnRequest) String() string {
-	err := opn.Validate()
+func (cmd *OpnRequest) String() string {
+	err := cmd.Validate()
 	if err != nil {
 		return ""
 	}
 
-	return fmt.Sprintf("%s002%02d", opn.GetName(), opn.PsCom)
+	return fmt.Sprintf("%s002%02d", cmd.GetName(), cmd.PsCom)
 }
