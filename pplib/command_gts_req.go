@@ -30,7 +30,7 @@ func (cmd *GtsRequest) Parse(rawData string) error {
 	pr := NewPositionalReader(rawData)
 
 	cmdName := pr.Read(3)
-	if cmdName != "GTS" {
+	if cmdName != cmd.GetName() {
 		return errors.New("cannot parse cmd command")
 	}
 

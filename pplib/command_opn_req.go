@@ -30,7 +30,7 @@ func (cmd *OpnRequest) Parse(rawData string) error {
 	pr := NewPositionalReader(rawData)
 
 	cmdName := pr.Read(3)
-	if cmdName != "OPN" {
+	if cmdName != cmd.GetName() {
 		return errors.New("cannot parse cmd command")
 	}
 
