@@ -7,7 +7,7 @@ import (
 )
 
 type OpnRequest struct {
-	PsCom int    `json:"psCom"`
+	PsCom string `json:"psCom"`
 }
 
 func (cmd *OpnRequest) GetName() string {
@@ -15,7 +15,12 @@ func (cmd *OpnRequest) GetName() string {
 }
 
 func (cmd *OpnRequest) Validate() error {
-	if cmd.PsCom < 0 || cmd.PsCom > 99 {
+	psc, err := strconv.Atoi(cmd.PsCom)
+	if err != nil {
+		return err
+	}
+
+	if psc < 0 || psc > 99 {
 		return errors.New("invalid PsCom value")
 	}
 	return nil
@@ -34,10 +39,7 @@ func (cmd *OpnRequest) Parse(rawData string) error {
 		return err
 	}
 
-	cmd.PsCom, err = strconv.Atoi(pr.Read(size))
-	if err != nil {
-		return err
-	}
+	cmd.PsCom = pr.Read(size)
 
 	return cmd.Validate()
 }
@@ -48,5 +50,5 @@ func (cmd *OpnRequest) String() string {
 		return ""
 	}
 
-	return fmt.Sprintf("%s002%02d", cmd.GetName(), cmd.PsCom)
+	return fmt.Sprintf("%s002%02s", cmd.GetName(), cmd.PsCom)
 }
