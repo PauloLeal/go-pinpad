@@ -8,7 +8,7 @@ import (
 
 type GtsResponse struct {
 	status    int
-	Timestamp string `json:"timestamp"`
+	Timestamp string `json:"timestamp" pp_dataType:"N10"`
 }
 
 func (cmd *GtsResponse) GetName() string {
@@ -16,10 +16,7 @@ func (cmd *GtsResponse) GetName() string {
 }
 
 func (cmd *GtsResponse) Validate() error {
-	if !isValidDataType(cmd.Timestamp, NUMBER, 10) {
-		return errors.New("invalid Timestamp value")
-	}
-	return nil
+	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
 func (cmd *GtsResponse) Parse(rawData string) error {

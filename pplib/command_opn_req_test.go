@@ -21,7 +21,7 @@ func TestOpnRequest_Parse(t *testing.T) {
 }
 
 func TestOpnRequest_String(t *testing.T) {
-	t.Run("00", auxTestCommand_String(&OpnRequest{PsCom: "0"}, "OPN00200"))
+	t.Run("00", auxTestCommand_String(&OpnRequest{PsCom: "00"}, "OPN00200"))
 	t.Run("99", auxTestCommand_String(&OpnRequest{PsCom: "99"}, "OPN00299"))
 	t.Run("100", auxTestCommand_String(&OpnRequest{PsCom: "100"}, ""))
 }

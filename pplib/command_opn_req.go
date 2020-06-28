@@ -7,7 +7,7 @@ import (
 )
 
 type OpnRequest struct {
-	PsCom string `json:"psCom"`
+	PsCom string `json:"psCom" pp_dataType:"N2"`
 }
 
 func (cmd *OpnRequest) GetName() string {
@@ -15,10 +15,7 @@ func (cmd *OpnRequest) GetName() string {
 }
 
 func (cmd *OpnRequest) Validate() error {
-	if !isValidDataType(cmd.PsCom, ALPHA, 2) {
-		return errors.New("invalid PsCom value")
-	}
-	return nil
+	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
 func (cmd *OpnRequest) Parse(rawData string) error {

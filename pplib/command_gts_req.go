@@ -7,7 +7,7 @@ import (
 )
 
 type GtsRequest struct {
-	AcquirerIndex string `json:"acquirer_index"`
+	AcquirerIndex string `json:"acquirer_index" pp_dataType:"N2"`
 }
 
 func (cmd *GtsRequest) GetName() string {
@@ -15,10 +15,7 @@ func (cmd *GtsRequest) GetName() string {
 }
 
 func (cmd *GtsRequest) Validate() error {
-	if !isValidDataType(cmd.AcquirerIndex, NUMBER, 2) {
-		return errors.New("invalid AcquirerIndex value")
-	}
-	return nil
+	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
 func (cmd *GtsRequest) Parse(rawData string) error {
