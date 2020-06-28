@@ -5,8 +5,8 @@ import (
 )
 
 func TestOpnRequest_Validate(t *testing.T) {
-	t.Run("00", auxTestCommand_Validate(&OpnRequest{PsCom: "0"}, false))
-	t.Run("-1", auxTestCommand_Validate(&OpnRequest{PsCom: "-1"}, true))
+	t.Run("00", auxTestCommand_Validate(&OpnRequest{PsCom: "00"}, false))
+	t.Run("-1", auxTestCommand_Validate(&OpnRequest{PsCom: "-01"}, true))
 	t.Run("100", auxTestCommand_Validate(&OpnRequest{PsCom: "100"}, true))
 	t.Run("1000", auxTestCommand_Validate(&OpnRequest{PsCom: "1000"}, true))
 }

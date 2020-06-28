@@ -16,7 +16,7 @@ func (cmd *GtsResponse) GetName() string {
 }
 
 func (cmd *GtsResponse) Validate() error {
-	if len(cmd.Timestamp) != 10 {
+	if !isValidDataType(cmd.Timestamp, NUMBER, 10) {
 		return errors.New("invalid Timestamp value")
 	}
 	return nil

@@ -15,12 +15,7 @@ func (cmd *OpnRequest) GetName() string {
 }
 
 func (cmd *OpnRequest) Validate() error {
-	psc, err := strconv.Atoi(cmd.PsCom)
-	if err != nil {
-		return err
-	}
-
-	if psc < 0 || psc > 99 {
+	if !isValidDataType(cmd.PsCom, ALPHA, 2) {
 		return errors.New("invalid PsCom value")
 	}
 	return nil

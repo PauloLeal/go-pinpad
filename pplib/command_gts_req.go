@@ -15,12 +15,7 @@ func (cmd *GtsRequest) GetName() string {
 }
 
 func (cmd *GtsRequest) Validate() error {
-	ac, err := strconv.Atoi(cmd.AcquirerIndex)
-	if err != nil {
-		return err
-	}
-
-	if ac < 0 || ac > 99 {
+	if !isValidDataType(cmd.AcquirerIndex, NUMBER, 2) {
 		return errors.New("invalid AcquirerIndex value")
 	}
 	return nil
