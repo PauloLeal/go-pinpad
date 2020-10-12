@@ -6,19 +6,19 @@ import (
 	"strconv"
 )
 
-type GtsRequest struct {
-	AcquirerIndex string `json:"acquirer_index" pp_dataType:"N2"`
+type RmcRequest struct {
+	Message string `json:"message" pp_dataType:"A32"`
 }
 
-func (cmd *GtsRequest) GetName() string {
-	return "GTS"
+func (cmd *RmcRequest) GetName() string {
+	return "RMC"
 }
 
-func (cmd *GtsRequest) Validate() error {
+func (cmd *RmcRequest) Validate() error {
 	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
-func (cmd *GtsRequest) Parse(rawData string) (err error) {
+func (cmd *RmcRequest) Parse(rawData string) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = r.(error)
@@ -37,16 +37,16 @@ func (cmd *GtsRequest) Parse(rawData string) (err error) {
 		return err
 	}
 
-	cmd.AcquirerIndex = pr.Read(size)
+	cmd.Message = pr.Read(size)
 
 	return cmd.Validate()
 }
 
-func (cmd *GtsRequest) String() string {
+func (cmd *RmcRequest) String() string {
 	err := cmd.Validate()
 	if err != nil {
 		return ""
 	}
 
-	return fmt.Sprintf("%s002%02s", cmd.GetName(), cmd.AcquirerIndex)
+	return fmt.Sprintf("%s032%32s", cmd.GetName(), cmd.Message)
 }

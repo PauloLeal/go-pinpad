@@ -36,6 +36,10 @@ func auxTestCommand_Parse(rawData string, target Command, expectedResult Command
 			t.Errorf("Expected to not return error")
 		}
 
+		if err != nil && expectError == true {
+			return
+		}
+
 		if !reflect.DeepEqual(target, expectedResult) {
 			t.Error(fmt.Sprintf("Expected Parse() of '%s' to be '%#v'. Got '%#v'.", rawData, expectedResult, target))
 		}

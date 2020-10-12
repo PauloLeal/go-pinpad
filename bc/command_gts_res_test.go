@@ -15,9 +15,10 @@ func TestGtsResponse_Validate(t *testing.T) {
 
 func TestGtsResponse_Parse(t *testing.T) {
 	t.Run("status 0", auxTestCommand_Parse("GTS0000100000000000", &GtsResponse{}, &GtsResponse{status: PP_OK, Timestamp: "0000000000"}, false))
-	t.Run("bad status", auxTestCommand_Parse("GTS00A0100000000000", &GtsResponse{}, &GtsResponse{status: PP_OK, Timestamp: ""}, true))
-	t.Run("Bad command name", auxTestCommand_Parse("GTX000000", &GtsResponse{}, &GtsResponse{status: PP_OK}, true))
-	t.Run("bad command size", auxTestCommand_Parse("GTS00001A0000000000", &GtsResponse{}, &GtsResponse{status: PP_OK, Timestamp: ""}, true))
+	t.Run("bad status", auxTestCommand_Parse("GTS00A0100000000000", &GtsResponse{}, &GtsResponse{}, true))
+	t.Run("Bad command name", auxTestCommand_Parse("GTX000000", &GtsResponse{}, &GtsResponse{}, true))
+	t.Run("bad command size", auxTestCommand_Parse("GTS00001A0000000000", &GtsResponse{}, &GtsResponse{}, true))
+	t.Run("bad param size", auxTestCommand_Parse("GTS0000110000000000", &GtsResponse{}, &GtsResponse{}, true))
 }
 
 func TestGtsResponse_String(t *testing.T) {

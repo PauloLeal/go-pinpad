@@ -18,7 +18,13 @@ func (cmd *OpnRequest) Validate() error {
 	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
-func (cmd *OpnRequest) Parse(rawData string) error {
+func (cmd *OpnRequest) Parse(rawData string) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = r.(error)
+		}
+	}()
+
 	pr := NewPositionalReader(rawData)
 
 	cmdName := pr.Read(3)

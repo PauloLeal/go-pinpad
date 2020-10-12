@@ -13,10 +13,11 @@ func TestGtsRequest_Validate(t *testing.T) {
 func TestGtsRequest_Parse(t *testing.T) {
 	t.Run("00", auxTestCommand_Parse("GTS00200", &GtsRequest{}, &GtsRequest{AcquirerIndex: "00"}, false))
 	t.Run("01", auxTestCommand_Parse("GTS00201", &GtsRequest{}, &GtsRequest{AcquirerIndex: "01"}, false))
-	t.Run("no params", auxTestCommand_Parse("GTS000", &GtsRequest{}, &GtsRequest{AcquirerIndex: ""}, true))
-	t.Run("bad size", auxTestCommand_Parse("GTS003100", &GtsRequest{}, &GtsRequest{AcquirerIndex: "100"}, true))
-	t.Run("bad size format", auxTestCommand_Parse("GTS0AA00", &GtsRequest{}, &GtsRequest{AcquirerIndex: ""}, true))
-	t.Run("bad name", auxTestCommand_Parse("GTX00200", &GtsRequest{}, &GtsRequest{AcquirerIndex: ""}, true))
+	t.Run("no params", auxTestCommand_Parse("GTS000", &GtsRequest{}, &GtsRequest{}, true))
+	t.Run("bad size", auxTestCommand_Parse("GTS003100", &GtsRequest{}, &GtsRequest{}, true))
+	t.Run("bad size format", auxTestCommand_Parse("GTS0AA00", &GtsRequest{}, &GtsRequest{}, true))
+	t.Run("bad name", auxTestCommand_Parse("GTX00200", &GtsRequest{}, &GtsRequest{}, true))
+	t.Run("bad param size", auxTestCommand_Parse("GTS00300", &GtsRequest{}, &GtsRequest{}, true))
 }
 
 func TestGtsRequest_String(t *testing.T) {

@@ -14,9 +14,10 @@ func TestOpnResponse_Validate(t *testing.T) {
 func TestOpnResponse_Parse(t *testing.T) {
 	t.Run("status 0", auxTestCommand_Parse("OPN000000", &OpnResponse{}, &OpnResponse{status: PP_OK}, false))
 	t.Run("status 14", auxTestCommand_Parse("OPN014000", &OpnResponse{}, &OpnResponse{status: PP_ALREADYOPEN}, false))
-	t.Run("bad command", auxTestCommand_Parse("XPN000000", &OpnResponse{}, &OpnResponse{status: 0}, true))
-	t.Run("bad status", auxTestCommand_Parse("OPN00A000", &OpnResponse{}, &OpnResponse{status: 0}, true))
-	t.Run("bad output", auxTestCommand_Parse("OPN00000A", &OpnResponse{}, &OpnResponse{status: 0}, true))
+	t.Run("bad command", auxTestCommand_Parse("XPN000000", &OpnResponse{}, &OpnResponse{}, true))
+	t.Run("bad status", auxTestCommand_Parse("OPN00A000", &OpnResponse{}, &OpnResponse{}, true))
+	t.Run("bad output", auxTestCommand_Parse("OPN00000A", &OpnResponse{}, &OpnResponse{}, true))
+	t.Run("bad param size", auxTestCommand_Parse("OPN000001", &OpnResponse{}, &OpnResponse{}, true))
 }
 
 func TestOpnResponse_String(t *testing.T) {

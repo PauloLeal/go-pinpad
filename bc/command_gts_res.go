@@ -19,7 +19,13 @@ func (cmd *GtsResponse) Validate() error {
 	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
-func (cmd *GtsResponse) Parse(rawData string) error {
+func (cmd *GtsResponse) Parse(rawData string) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = r.(error)
+		}
+	}()
+
 	pr := NewPositionalReader(rawData)
 
 	cmdName := pr.Read(3)

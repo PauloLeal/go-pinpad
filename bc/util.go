@@ -30,7 +30,7 @@ func isValidDataType(data string, dataType PP_DataType, size int) bool {
 }
 
 func isDataTypeAlpha(data string) bool {
-	matched, _ := regexp.MatchString("^[a-zA-Z0-9]*$", data)
+	matched, _ := regexp.MatchString("^.*$", data)
 	return matched
 }
 

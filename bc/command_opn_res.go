@@ -18,7 +18,7 @@ func (cmd *OpnResponse) Validate() error {
 	return nil
 }
 
-func (cmd *OpnResponse) Parse(rawData string) error {
+func (cmd *OpnResponse) Parse(rawData string) (err error) {
 	pr := NewPositionalReader(rawData)
 
 	cmdName := pr.Read(3)
