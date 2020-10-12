@@ -1,4 +1,4 @@
-package pplib
+package bc
 
 import (
 	"errors"
@@ -6,19 +6,19 @@ import (
 	"strconv"
 )
 
-type OpnRequest struct {
-	PsCom string `json:"psCom" pp_dataType:"N2"`
+type GtsRequest struct {
+	AcquirerIndex string `json:"acquirer_index" pp_dataType:"N2"`
 }
 
-func (cmd *OpnRequest) GetName() string {
-	return "OPN"
+func (cmd *GtsRequest) GetName() string {
+	return "GTS"
 }
 
-func (cmd *OpnRequest) Validate() error {
+func (cmd *GtsRequest) Validate() error {
 	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
-func (cmd *OpnRequest) Parse(rawData string) error {
+func (cmd *GtsRequest) Parse(rawData string) error {
 	pr := NewPositionalReader(rawData)
 
 	cmdName := pr.Read(3)
@@ -31,16 +31,16 @@ func (cmd *OpnRequest) Parse(rawData string) error {
 		return err
 	}
 
-	cmd.PsCom = pr.Read(size)
+	cmd.AcquirerIndex = pr.Read(size)
 
 	return cmd.Validate()
 }
 
-func (cmd *OpnRequest) String() string {
+func (cmd *GtsRequest) String() string {
 	err := cmd.Validate()
 	if err != nil {
 		return ""
 	}
 
-	return fmt.Sprintf("%s002%02s", cmd.GetName(), cmd.PsCom)
+	return fmt.Sprintf("%s002%02s", cmd.GetName(), cmd.AcquirerIndex)
 }

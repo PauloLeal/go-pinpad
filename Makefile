@@ -1,18 +1,26 @@
-COVER_PROFILE_FILE=/tmp/goemv-go-cover.tmp
+TARGET_FILE=${shell head -n1 go.mod | sed -r 's/.*\/(.*)/\1/g' }
+BUILD_DIR=build
+COVER_PROFILE_FILE="${BUILD_DIR}/go-cover.tmp"
 
-target: test
+target: build
 
-t:
+clean:
+	rm -rf $(TARGET_FILE) $(BUILD_DIR)
+
+lint:
+	@go fmt ./...
+
+############## test tasks
+
+test: lint
 	go test -v -cover -count 1 ./...
+	$(MAKE) badge
 
-c:
-	go test -coverprofile=${COVER_PROFILE_FILE} ./...
-	go tool cover -html=${COVER_PROFILE_FILE}
+cover-html: test
+	go test -coverprofile=$(COVER_PROFILE_FILE) ./...
+	go tool cover -html=$(COVER_PROFILE_FILE)
 
 badge:
-	gopherbadger -md="README.md" -png=false > /dev/null
-	rm coverage.out
-
-test: t badge
-
-cover-html: c badge
+	@go get github.com/jpoles1/gopherbadger/...
+	gopherbadger -md="README.md" -png=false 1>&2 2> /dev/null
+	@if [ -f coverage.out ]; then rm coverage.out ; fi;
