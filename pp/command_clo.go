@@ -1,4 +1,4 @@
-package bc
+package pp
 
 import (
 	"errors"
@@ -6,19 +6,19 @@ import (
 	"strconv"
 )
 
-type OpnRequest struct {
-	PsCom string `json:"psCom" pp_dataType:"N2"`
+type CloRequest struct {
+	IdleMessage string `json:"idle_message" pp_dataType:"A32"`
 }
 
-func (cmd *OpnRequest) GetName() string {
-	return "OPN"
+func (cmd *CloRequest) GetName() string {
+	return "CLO"
 }
 
-func (cmd *OpnRequest) Validate() error {
+func (cmd *CloRequest) Validate() error {
 	return ValidateFieldsByDataTypeTag(*cmd)
 }
 
-func (cmd *OpnRequest) Parse(rawData string) (err error) {
+func (cmd *CloRequest) Parse(rawData string) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			err = r.(error)
@@ -37,33 +37,33 @@ func (cmd *OpnRequest) Parse(rawData string) (err error) {
 		return err
 	}
 
-	cmd.PsCom = pr.Read(size)
+	cmd.IdleMessage = pr.Read(size)
 
 	return cmd.Validate()
 }
 
-func (cmd *OpnRequest) String() string {
+func (cmd *CloRequest) String() string {
 	err := cmd.Validate()
 	if err != nil {
 		return ""
 	}
 
-	return fmt.Sprintf("%s002%02s", cmd.GetName(), cmd.PsCom)
+	return fmt.Sprintf("%s032%32s", cmd.GetName(), cmd.IdleMessage)
 }
 
-type OpnResponse struct {
+type CloResponse struct {
 	status int
 }
 
-func (cmd *OpnResponse) GetName() string {
-	return "OPN"
+func (cmd *CloResponse) GetName() string {
+	return "CLO"
 }
 
-func (cmd *OpnResponse) Validate() error {
+func (cmd *CloResponse) Validate() error {
 	return nil
 }
 
-func (cmd *OpnResponse) Parse(rawData string) (err error) {
+func (cmd *CloResponse) Parse(rawData string) (err error) {
 	pr := NewPositionalReader(rawData)
 
 	cmdName := pr.Read(3)
@@ -86,10 +86,10 @@ func (cmd *OpnResponse) Parse(rawData string) (err error) {
 	return cmd.Validate()
 }
 
-func (cmd *OpnResponse) String() string {
+func (cmd *CloResponse) String() string {
 	return fmt.Sprintf("%s%03d000", cmd.GetName(), cmd.status)
 }
 
-func (cmd *OpnResponse) GetStatus() int {
+func (cmd *CloResponse) GetStatus() int {
 	return cmd.status
 }
