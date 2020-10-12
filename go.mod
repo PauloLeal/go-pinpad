@@ -1,4 +1,4 @@
-module github.com/PauloLeal/goemv
+module github.com/PauloLeal/go-pinpad
 
 go 1.14
 
