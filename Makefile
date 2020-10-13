@@ -1,7 +1,7 @@
 TARGET_FILE=${shell head -n1 go.mod | sed -r 's/.*\/(.*)/\1/g' }
 COVER_PROFILE_FILE="/tmp/$(TARGET_FILE)-go-cover.tmp"
 
-target: build
+target: test
 
 clean:
 	rm -rf $(TARGET_FILE) $(BUILD_DIR)
